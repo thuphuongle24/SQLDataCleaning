@@ -61,17 +61,20 @@ The dataset for this project consists of one primary table that tracks layoffs a
 
 <img width="600" height="544" alt="image" src="https://github.com/user-attachments/assets/8535c2f2-2505-48c5-9565-e0fdfb4f3be9" />
 
+
 **Category 2: Company size and funding impact**
 - Companies with larger funding (>200M USD) and more mature stages (Series D–H, Post-IPO) generally show lower percentage layoffs.
 - Smaller or early-stage companies (low funding, <50M) often have higher layoffs, with some exceeding 30% of the workforce.
   
 <img width="600" height="544" alt="image" src="https://github.com/user-attachments/assets/e2a7b216-b17b-454d-abb6-0aa8ac999787" />
 
+
 **Category 3: Company Stage & Temporal Trends**
 - Layoffs fluctuate across months, with peaks in certain periods, indicating seasonal or event-driven workforce reductions.
 - Post-IPO and late-stage companies are less affected, while early-stage and Series B–C companies are more sensitive to funding or market pressures.
 
 <img width="600" height="546" alt="image" src="https://github.com/user-attachments/assets/7103d2ae-cd77-458e-904e-fdde1eff4d0c" />
+
 
 **Category 4: Geographic and Regional Patterns**
 - Countries such as the United States and India report the highest total layoffs, while smaller markets have fewer but sometimes higher percentages per company.
@@ -80,8 +83,13 @@ The dataset for this project consists of one primary table that tracks layoffs a
 
 <img width="700" height="555" alt="image" src="https://github.com/user-attachments/assets/12518fe3-01a1-4e6b-85bf-c10813620c46" />
 
+
 #### Recommendations
 - Companies and investors should closely monitor industries with historically high layoffs, such as Food, Travel, and Real Estate, as well as smaller or early-stage firms. 
 - Funding levels and company stage can serve as strong indicators of workforce stability.
 - Using regional dashboards and monthly trend analysis can guide hiring, expansion, and investment decisions to anticipate and mitigate workforce reductions.
 
+## Assumptions and Caveats
+- **Geographic coverage bias**: The dataset appears to be more comprehensive for the US and Europe, while data from Asia (particularly China, India, and Southeast Asia) may be underreported. Insights may therefore reflect Western labor market trends more strongly.
+- **Company size representation**: Larger, publicly visible companies are more likely to be reported in layoff statistics, whereas layoffs in small or private firms may not be captured at the same level of detail.
+- **Industry classification overlap**: Some companies operate across multiple industries (e.g., Amazon in both retail and tech). For the purpose of analysis, we assumed a single dominant industry classification, which may oversimplify reality.
