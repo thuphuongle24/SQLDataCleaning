@@ -33,5 +33,24 @@ Insights on how layoffs vary by company stage (Series B–H, Post-IPO, Acquired)
 
 Analysis of layoffs by country and region to identify markets with higher workforce reduction risk.
 
+# Data Structure
+The dataset for this project consists of one primary table that tracks layoffs across multiple companies worldwide.
+
+- company (TEXT): Name of the company.
+- industry (TEXT): Industry the company operates in (e.g., Tech, Retail, Healthcare).
+- location (TEXT): City or region of the company.
+- country (TEXT): Country where the company is based.
+- total_laid_off (INT): Total number of employees laid off during the period.
+- percentage_laid_off (DECIMAL): Fraction of the company workforce laid off (e.g., 0.06 = 6%).
+- date (DATE): Date when layoffs were reported. 
+- stage (TEXT): Company stage: Series B–H, Post-IPO, Acquired, Private Equity.
+- funds_raised_millions (INT): Total funds raised by the company in millions USD.
+
+# Executive Summary
+
+### Overview of Findings
+1. Industry-specific layoff trends: Certain industries, such as **Food, Travel, and Real Estate**, experienced **significantly higher layoff percentages**, while others like **Finance and Other sectors** maintained more **stable workforce levels**. 
+2. Company size and funding matter: Companies with larger funding or more mature stages (Series D–H, Post-IPO) generally had lower percentages of layoffs, suggesting that financial stability and maturity provide a buffer against workforce reductions.
+3. Temporal and regional patterns: Layoffs show month-to-month variation, with some countries like the United States and India reporting the highest total layoffs. This indicates that both timing and location are key factors for workforce planning and risk mitigation.
 
 
