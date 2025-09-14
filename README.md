@@ -48,9 +48,36 @@ The dataset for this project consists of one primary table that tracks layoffs a
 
 # Executive Summary
 
-### Overview of Findings
+## Overview of Findings
 1. Industry-specific layoff trends: Certain industries, such as **Food, Travel, and Real Estate**, experienced **significantly higher layoff percentages**, while others like **Finance and Other sectors** maintained more **stable workforce levels**. 
 2. Company size and funding matter: Companies with larger funding or more mature stages (Series D–H, Post-IPO) generally had lower percentages of layoffs, suggesting that financial stability and maturity provide a buffer against workforce reductions.
 3. Temporal and regional patterns: Layoffs show month-to-month variation, with some countries like the United States and India reporting the highest total layoffs. This indicates that both timing and location are key factors for workforce planning and risk mitigation.
+
+## Insights and Recommendations
+**Category 1: Industry-level Layoff Trends**
+- Industries such as Food, Travel, and Real Estate show the highest average percentage of layoffs, while industries like Finance and Other sectors maintain more stable workforce levels.
+- Bar charts show that top layoffs by total employees also align with these high-risk industries.
+
+<img width="600" height="544" alt="image" src="https://github.com/user-attachments/assets/8535c2f2-2505-48c5-9565-e0fdfb4f3be9" />
+
+**Category 2: Company size and funding impact**
+- Companies with larger funding (>200M USD) and more mature stages (Series D–H, Post-IPO) generally show lower percentage layoffs.
+- Smaller or early-stage companies (low funding, <50M) often have higher layoffs, with some exceeding 30% of the workforce.
+  
+<img width="600" height="544" alt="image" src="https://github.com/user-attachments/assets/e2a7b216-b17b-454d-abb6-0aa8ac999787" />
+
+**Category 3: Company Stage & Temporal Trends**
+- Layoffs fluctuate across months, with peaks in certain periods, indicating seasonal or event-driven workforce reductions.
+- Post-IPO and late-stage companies are less affected, while early-stage and Series B–C companies are more sensitive to funding or market pressures.
+
+<img width="600" height="546" alt="image" src="https://github.com/user-attachments/assets/7103d2ae-cd77-458e-904e-fdde1eff4d0c" />
+
+**Category 4: Geographic and Regional Patterns**
+- Countries such as the United States and India report the highest total layoffs, while smaller markets have fewer but sometimes higher percentages per company.
+- This could be explained as the US is the world’s largest tech & startup hub, so naturally it dominates both in company count and layoff volume. India is the second largest in scale, as India has many large IT services & outsourcing firms (Infosys, Wipro, TCS).
+- Regional differences may be linked to industry concentration, local regulations, and funding availability.
+
+<img width="700" height="555" alt="image" src="https://github.com/user-attachments/assets/12518fe3-01a1-4e6b-85bf-c10813620c46" />
+
 
 
