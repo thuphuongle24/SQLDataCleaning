@@ -1,0 +1,237 @@
+-- DATA ANALYSIS
+
+SELECT * FROM layoffs_staging4; 
+
+-- EXPLORE THE DATA SET 
+SELECT 
+   company,
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY company
+ORDER BY 2 DESC
+; 
+    -- We can look at which companies laid off the most
+    
+SELECT 
+   MIN(date),
+   MAX(date)
+FROM layoffs_staging4
+;
+   -- The period of laidoff started from 2020-03-11 to 2023-03-06
+   
+SELECT 
+   industry,
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY industry
+ORDER BY 2 DESC
+;
+   -- We can see there are fields laid off the most, there are fields laid off less
+
+SELECT 
+   country,
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY country
+ORDER BY 2 DESC
+; 
+   -- We can see there are countries laid off the most
+SELECT 
+   YEAR(`date`),
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY YEAR(`date`)
+ORDER BY 1 DESC
+; 
+
+SELECT 
+   SUBSTRING(`date`,1,7) AS `month`,
+   SUM(total_laid_off)
+FROM layoffs_staging4
+WHERE SUBSTRING(`date`,1,7) IS NOT NULL
+GROUP BY `month`
+ORDER BY 1
+;
+
+WITH Rolling_total AS
+(
+SELECT 
+   SUBSTRING(`date`,1,7) AS `month`,
+   SUM(total_laid_off) AS total_laidoff
+FROM layoffs_staging4
+WHERE SUBSTRING(`date`,1,7) IS NOT NULL
+GROUP BY `month`
+ORDER BY 1
+)
+SELECT
+   `month`,
+   total_laidoff,
+   SUM(total_laidoff) OVER(ORDER BY `month`) AS rolling_total
+FROM Rolling_total
+;
+   
+
+SELECT 
+   company,
+   `date`,
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY company
+ORDER BY 2 DESC
+; 
+
+SELECT 
+   company,
+   YEAR(`date`),
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY company, YEAR(`date`)
+ORDER BY 3 DESC
+;
+
+WITH Company_Year (company, years, total_laid_off) AS
+(
+SELECT 
+   company,
+   YEAR(`date`),
+   SUM(total_laid_off)
+FROM layoffs_staging4
+GROUP BY company, YEAR(`date`)
+),
+
+Company_laidoff_ranking AS
+(
+SELECT 
+   *,
+   DENSE_RANK() OVER(PARTITION BY years ORDER BY total_laid_off DESC) AS Ranking
+FROM Company_Year
+WHERE years IS NOT NULL
+)
+
+SELECT 
+   *
+FROM Company_laidoff_ranking
+WHERE Ranking <= 5
+    -- Find the top 5 most laidoff companies
+;
+
+-- Q1: Which companies have the largest total layoffs?
+-- Business prob: Who is the industry is struggling the most, to see the benchmark risk, or if the trend could hit your company
+SELECT 
+   company,
+   industry,
+   SUM(total_laid_off) AS total_laid_off
+FROM layoffs_staging4
+GROUP BY 1,2
+ORDER BY 3 DESC
+LIMIT 10
+;
+   -- Tech giants like Amazon, Google, Meta, Microsoft have the highest laidoffs --> Big Tech dominates the laidoffs
+   -- Diverse industries are affected: Consumer, Sale, Healthcare, Transportation, Travel, ...
+
+-- Q2: Which industries are most affected by layoffs?
+-- Business prob: It tells you whether layoffs are industry-wide pressure or company-specific mismanagement.
+SELECT * FROM layoffs_staging4;
+
+SELECT 
+   industry,
+   SUM(total_laid_off) AS total_laid_off,
+   CONCAT(ROUND(AVG(CAST(percentage_laid_off AS DECIMAL)) * 100, 2), '%') AS average_percentage_laidoff
+FROM layoffs_staging4
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10
+;
+   -- During the 3-year period, Consumer and Retail had around 14 - 17% laid off, which suggests they’re large industries cutting moderately
+   -- Food and Travel dominated the laidoff, even though absolute numbers are smaller, the impact per company is larger
+
+-- Q3: Are layoffs concentrated in certain countries?
+-- Business prob: where the labor market is volatile. Investors and policymakers also watch this to gauge economic health.
+
+SELECT 
+   country,
+   SUM(total_laid_off) AS total_laid_off,
+   COUNT(DISTINCT company) AS company
+FROM layoffs_staging4
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10
+;
+   -- United States is overwhelmingly dominant, which is 256,559 layoffs across 1,055 companies
+   -- Business lens: The US is the world’s largest tech & startup hub, so naturally it dominates both in company count and layoff volume.
+   -- India is the second largest in scale, as India has many large IT services & outsourcing firms (Infosys, Wipro, TCS). 
+
+-- Q4: Do layoffs correlate with the company’s stage (startup, growth, post-IPO)?
+-- Business mindset: Investors want to know: are early-stage startups more likely to cut staff due to cash burn, 
+-- or are mature companies cutting costs to satisfy shareholders?
+
+SELECT 
+  stage,
+  SUM(total_laid_off) AS total_laid_off,
+  CONCAT(ROUND(AVG(CAST(percentage_laid_off AS DECIMAL)) * 100, 2), '%') AS percentage_laid_off
+FROM layoffs_staging4
+GROUP BY 1
+ORDER BY total_laid_off DESC
+LIMIT 10
+;
+
+   -- Post-IPO companies dominate absolute layoffs. OVer 200k laidoff but only 11,34% --> these companies employ huge workforces, so even cutting 5% equals tens of thousands of people.
+   -- Earlier stage startups cut deeper (Series B (18.31%), Series C (11.34%), Unknown (19.26%), Acquired (19.54%).)
+   -- --> Smaller startups have less cash runway
+   -- Later-stage VC rounds (Series D, E, F, H) cut less --> They are more stable 
+
+-- Q5: Are layoffs related to how much money companies have raised?
+-- Stakeholders ask: “If you raise millions, shouldn’t you avoid layoffs?” 
+-- This checks if layoffs are tied to cash mismanagement or if they still happen despite large funding.
+
+SELECT * FROM layoffs_staging4;
+
+SELECT 
+   CASE 
+      WHEN funds_raised_millions < 50 THEN 'Small(<50)'
+      WHEN funds_raised_millions BETWEEN 50 AND 200 THEN 'Medium(50-200)'
+      ELSE 'Large(>200)'
+   END AS funding_group,
+   SUM(total_laid_off) AS total_laid_off,
+   CONCAT(ROUND(AVG(CAST(percentage_laid_off AS DECIMAL)) * 100,2), '%') AS percentage_laid_off
+FROM layoffs_staging4   
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10
+;
+   -- Small companies are more vulnerable to market shocks → limited cash reserves → layoffs are deeper.
+   -- Medium companies are somewhat resilient but still cut staff when needed.
+   -- Large companies are financially strong, with diversified revenue → can maintain employees better → smaller percentage laid off.
+   
+-- Q6: Which industries and company stages are most at risk of layoffs over time, and is there a relationship with funding size?
+WITH comapny_pct_laidoff AS
+(
+SELECT 
+   company,
+   industry,
+   country,
+   SUBSTRING(`date`,1,7) AS month,
+   SUM(total_laid_off) AS total_laid_off,
+   CONCAT(ROUND(AVG(percentage_laid_off)*100,2), '%') AS company_pct_laidoff,
+   funds_raised_millions,
+   CASE 
+	  WHEN funds_raised_millions < 50 THEN 'Small(<50)'
+	  WHEN funds_raised_millions BETWEEN 50 AND 200 THEN 'Medium(50-200)'
+	  ELSE 'Large(>200)'
+   END AS funding_group
+FROM layoffs_staging4
+GROUP BY 
+   company,
+   industry,
+   country,
+   month,
+   funds_raised_millions
+ORDER BY total_laid_off DESC
+)
+SELECT 
+   *,
+   CONCAT(ROUND(AVG(company_pct_laidoff) OVER(PARTITION BY industry, month), 2), '%') As industry_pct_laid_off
+FROM comapny_pct_laidoff
+ORDER BY total_laid_off DESC
+;   
+
