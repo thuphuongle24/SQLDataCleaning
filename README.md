@@ -54,6 +54,7 @@ The dataset for this project consists of one primary table that tracks layoffs a
 3. Temporal and regional patterns: Layoffs show month-to-month variation, with some countries like the United States and India reporting the highest total layoffs. This indicates that both timing and location are key factors for workforce planning and risk mitigation.
 
 ## Insights and Recommendations
+#### Insights
 **Category 1: Industry-level Layoff Trends**
 - Industries such as Food, Travel, and Real Estate show the highest average percentage of layoffs, while industries like Finance and Other sectors maintain more stable workforce levels.
 - Bar charts show that top layoffs by total employees also align with these high-risk industries.
@@ -79,5 +80,8 @@ The dataset for this project consists of one primary table that tracks layoffs a
 
 <img width="700" height="555" alt="image" src="https://github.com/user-attachments/assets/12518fe3-01a1-4e6b-85bf-c10813620c46" />
 
-
+#### Recommendations
+- Companies and investors should closely monitor industries with historically high layoffs, such as Food, Travel, and Real Estate, as well as smaller or early-stage firms. 
+- Funding levels and company stage can serve as strong indicators of workforce stability.
+- Using regional dashboards and monthly trend analysis can guide hiring, expansion, and investment decisions to anticipate and mitigate workforce reductions.
 
